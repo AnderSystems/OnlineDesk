@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <title>Unity WebGL</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="AgoraWebSDK/libs/agora-extension-virtual-background.js"></script>
+  <script src="AgoraWebSDK/libs/virtualbackground.js"></script>
+  <script src="AgoraWebSDK/libs/databuilder.js"></script>
+  <script src="AgoraWebSDK/libs/clientmanager.js"></script>
+  <script src="AgoraWebSDK/libs/wglwrapper.js"></script>
+  <script src="AgoraWebSDK/libs/audioeffects.js"></script>
+  <script src="AgoraWebSDK/libs/eventmanager.js"></script>
+  <script src="AgoraWebSDK/libs/engineglobals.js"></script>
+  <script src="AgoraWebSDK/libs/watermark.js"></script>
+  <script src="AgoraWebSDK/libs/customvideo.js"></script>
+  <script src="AgoraWebSDK/libs/agorachannel.js"></script>
+  <script src="AgoraWebSDK/libs/multichannel.js"></script>
+  <script src="AgoraWebSDK/libs/audiosystem.js"></script>
+  <script src="AgoraWebSDK/libs/testing.js"></script>
+  <script src="AgoraWebSDK/libs/agorautils.js"></script>
+  <script src="AgoraWebSDK/libs/audiomixing.js"></script>
+  <script src="AgoraWebSDK/agorartcenginev2.js"></script>
+  <script src="AgoraRTC_N.js"></script>
+  <script src="AgoraWebSDK/libs/spatial-audio-main.js" type="module"></script>
+</head>
+
+<body>
+  <div id="unity-container" class="unity-desktop">
+    <canvas id="unity-canvas"></canvas>
+    <div id="unity-loading-bar">
+      <div id="unity-progress-bar-empty">
+        <div id="unity-progress-bar-full"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    var unityInstance;
+    var buildUrl = "Build";
+    var loaderUrl = buildUrl + "/Web.loader.js";
+    var config = {
+      dataUrl: buildUrl + "/Web.data.br",
+      frameworkUrl: buildUrl + "/Web.framework.js.br",
+      codeUrl: buildUrl + "/Web.wasm.br",
+      streamingAssetsUrl: "StreamingAssets",
+      companyName: "DefaultCompany",
+      productName: "OnlineDesk2025",
+      productVersion: "0.1.0",
+    };
+
+    var container = document.querySelector("#unity-container");
+    var canvas = document.querySelector("#unity-canvas");
+    var loadingBar = document.querySelector("#unity-loading-bar");
+    var progressBarFull = document.querySelector("#unity-progress-bar-full");
+    var mobileWarning = document.querySelector("#unity-mobile-warning");
+
+    canvas.style.width = "100%";
+    canvas.style.height = "100%";
+
+    loadingBar.style.display = "block";
+
+    var script = document.createElement("script");
+    script.src = loaderUrl;
+    script.onload = () => {
+      createUnityInstance(canvas, config, (progress) => {
+        progressBarFull.style.width = 100 * progress + "%";
+      }).then((unityInstance2) => {
+        unityInstance = unityInstance2;
+        loadingBar.style.display = "none";
+      }).catch((message) => {
+        alert(message);
+      });
+    };
+    document.body.appendChild(script);
+  </script>
+</body>
+
+</html>
